@@ -21,6 +21,8 @@ const styles = StyleSheet.create({
     },
 });
 
+
+
 export default function Status() {
     const [hunger, setHunger] = useState(70);
     const [sleep, setSleep] = useState(70);

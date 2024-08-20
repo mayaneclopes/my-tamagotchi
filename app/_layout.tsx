@@ -4,7 +4,6 @@ import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import 'react-native-reanimated';
-
 import { useColorScheme } from '@/hooks/useColorScheme';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
@@ -30,6 +29,9 @@ export default function RootLayout() {
     <Stack>
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       <Stack.Screen name="+not-found" />
+      <Stack.Screen name="register" options={{ title: 'Cadastrar Tamagotchi' }} />
+      <Stack.Screen name="list" options={{ title: 'Lista de Tamagotchis' }} />
+      <Stack.Screen name="index" options={{ title: 'Boas-vindas' }} />
     </Stack>
   );
 }
