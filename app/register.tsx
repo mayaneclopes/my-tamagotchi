@@ -5,9 +5,8 @@ import { database } from "@/database/Database";
 import Smile from "@/database/Model";
 import list from "./list";
 
-export default function Register() {
+export default function register() {
     const [name, setName] = useState("");
-    // Defina o estado para a imagem, se necessário
     const [image, setImage] = useState("");
     const navigation = useNavigation();
 
@@ -64,8 +63,7 @@ export default function Register() {
             <TextInput
                 style={styles.input}
                 value={image}
-                onChangeText={setImage} // Adicione a lógica para manipulação de imagem, se necessário
-            />
+                onChangeText={setImage} />
             <Button
                 title="Cadastrar"
                 onPress={handleRegister}

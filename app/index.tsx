@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../types';
+import { RootStackParamList } from './types';
 
 type HomeScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'index'>;
 
@@ -13,10 +13,20 @@ export default function Home() {
     navigation.navigate('list');
   };
 
+  const navigateToRegister = () => {
+    navigation.navigate('register');
+  };
+
+  const navigateToTammagotchi = () => {
+    navigation.navigate('tamagotchi');
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.welcomeText}>Bem-vindo ao Tamagotchi App!</Text>
       <Button title="Ver Tamagotchis" onPress={navigateToList} />
+      <Button title="Cadastrar Tamagotchi" onPress={navigateToRegister} />
+      <Button title="Tamagotchi" onPress={navigateToTammagotchi} />
     </View>
   );
 }

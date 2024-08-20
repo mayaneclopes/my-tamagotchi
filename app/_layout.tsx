@@ -27,11 +27,11 @@ export default function RootLayout() {
 
   return (
     <Stack>
-      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-      <Stack.Screen name="+not-found" />
+      <Stack.Screen name="index" options={{ title: 'Boas-vindas' }} />
       <Stack.Screen name="register" options={{ title: 'Cadastrar Tamagotchi' }} />
       <Stack.Screen name="list" options={{ title: 'Lista de Tamagotchis' }} />
-      <Stack.Screen name="index" options={{ title: 'Boas-vindas' }} />
+      <Stack.Screen name="tamagotchi" options={{ title: 'Tamagotchi' }} />
+      <Stack.Screen name="+not-found" />
     </Stack>
   );
 }
