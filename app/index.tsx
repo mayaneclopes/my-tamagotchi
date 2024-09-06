@@ -17,8 +17,8 @@ export default function Home() {
     navigation.navigate('register');
   };
 
-  const navigateToTammagotchi = () => {
-    navigation.navigate('tamagotchi');
+  const navigateToTammagotchi = (id: number) => {
+    navigation.navigate('tamagotchi', { id });
   };
 
   return (
