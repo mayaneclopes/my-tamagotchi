@@ -1,6 +1,6 @@
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
+import { Slot, Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import 'react-native-reanimated';
@@ -26,12 +26,6 @@ export default function RootLayout() {
   }
 
   return (
-    <Stack>
-      <Stack.Screen name="index" options={{ title: 'Boas-vindas' }} />
-      <Stack.Screen name="register" options={{ title: 'Cadastrar Tamagotchi' }} />
-      <Stack.Screen name="list" options={{ title: 'Lista de Tamagotchis' }} />
-      <Stack.Screen name="tamagotchi" options={{ title: 'Tamagotchi' }} />
-      <Stack.Screen name="+not-found" />
-    </Stack>
+    <Slot />
   );
 }

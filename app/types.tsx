@@ -4,4 +4,5 @@ export type RootStackParamList = {
     '+not-found': undefined;
     register: undefined;
     list: undefined;
+    tamagotchi: undefined;
 };
