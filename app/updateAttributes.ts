@@ -1,5 +1,6 @@
+// tamagotchiService.ts
 import { useSQLiteContext } from "expo-sqlite";
-import { Tamagotchi } from "../types";
+import { Tamagotchi } from "./types";
 
 export function useTamagotchiDatabase() {
     const database = useSQLiteContext();
@@ -19,24 +20,19 @@ export function useTamagotchiDatabase() {
         }
     }
 
-    async function getTamagotchi():
-        Promise<Tamagotchi[]> {
+    async function getTamagotchi(): Promise<Tamagotchi[]> {
         try {
-            const response =
-                await database.getAllAsync<Tamagotchi>(
-                    `SELECT * FROM Tamagotchi;`
-                );
+            const response = await database.getAllAsync<Tamagotchi>(
+                `SELECT * FROM Tamagotchi;`
+            );
             return response;
         } catch (error) {
             throw error;
         }
     }
 
-    async function updateAttributes(
-        id: number, newAttributes: Partial<Tamagotchi>): Promise<void> {
-        const { hunger,
-            sleep,
-            happy } = newAttributes;
+    async function updateAttributes(id: number, newAttributes: Partial<{ hunger: number; sleep: number; happy: number }>): Promise<void> {
+        const { hunger, sleep, happy } = newAttributes;
         const query = await database.prepareAsync(`
             UPDATE Tamagotchi
             SET hunger = COALESCE($hunger, hunger),
@@ -46,7 +42,8 @@ export function useTamagotchiDatabase() {
         `);
         try {
             await query.executeAsync([hunger ?? null,
-            sleep ?? null, happy ?? null, id]);
+            sleep ?? null,
+            happy ?? null, id]);
         } catch (error) {
             console.log(error);
             throw error;

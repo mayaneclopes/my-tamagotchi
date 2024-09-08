@@ -11,4 +11,7 @@ export interface Tamagotchi {
     id: number;
     name: string;
     image?: string;
+    hunger: number;
+    sleep: number;
+    happy: number;
 }
