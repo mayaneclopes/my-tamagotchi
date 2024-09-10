@@ -18,14 +18,20 @@ export default function Home() {
   };
 
   const navigateToTammagotchi = (id: number) => {
-    navigation.navigate('tamagotchi', { id });
+    navigation.navigate('tamagotchi', { tamagotchiID: id });
   };
 
   return (
     <View style={styles.container}>
       <Text style={styles.welcomeText}>Bem-vindo ao Tamagotchi App!</Text>
-      <Button title="Ver Tamagotchis" onPress={navigateToList} />
-      <Button title="Cadastrar Tamagotchi" onPress={navigateToRegister} />
+      <View style={styles.buttonContainer}>
+        <Button
+          color='#cd49ec'
+          title="Ver Tamagotchis" onPress={navigateToList} />
+        <Button
+          color='#cd49ec'
+          title="Cadastrar Tamagotchi" onPress={navigateToRegister} />
+      </View>
     </View>
   );
 }
@@ -35,10 +41,16 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: '#DDBDE5',
     padding: 16,
   },
   welcomeText: {
-    fontSize: 24,
+    fontSize: 20,
     marginBottom: 16,
+    fontWeight: 'bold',
   },
+  buttonContainer: {
+    flexDirection: 'column',
+    gap: 16,
+  }
 });

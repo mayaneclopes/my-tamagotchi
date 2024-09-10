@@ -11,7 +11,7 @@ const TicTacToe = ({ tamagotchiID }: TicTacToeProps) => {
     const [board, setBoard] = useState<string[]>(Array(9).fill(''));
     const [isPlayerTurn, setIsPlayerTurn] = useState(true);
     const [winner, setWinner] = useState<string | null>(null);
-    const { updateAttributes } = useTamagotchiDatabase();
+    const [happy, setHappy] = useState<number>(70);
     const navigation = useNavigation();
 
     const styles = StyleSheet.create({
@@ -20,6 +20,7 @@ const TicTacToe = ({ tamagotchiID }: TicTacToeProps) => {
             justifyContent: 'center',
             alignItems: 'center',
             padding: 20,
+            backgroundColor: '#DDBDE0',
         },
         cell: {
             width: 100,
@@ -28,15 +29,17 @@ const TicTacToe = ({ tamagotchiID }: TicTacToeProps) => {
             alignItems: 'center',
             borderWidth: 1,
             borderColor: "#000",
-            backgroundColor: 'white',
+            backgroundColor: '##eacef1',
         },
         board: {
             width: 300,
             flexWrap: 'wrap',
             flexDirection: 'row',
         },
-        button: {
+        buttonContainer: {
             marginTop: 20,
+            flexDirection: 'column',
+            gap: 16,
         },
         text: {
             fontSize: 34,
@@ -117,9 +120,7 @@ const TicTacToe = ({ tamagotchiID }: TicTacToeProps) => {
 
         try {
             console.log("Atualizando atributos do Tamagotchi:", tamagotchiID, { happy: 100 });
-            await updateAttributes(tamagotchiID, {
-                happy: 100
-            });
+            await setHappy(100);
             Alert.alert("Parabéns!", "Você deixou seu bichinho muito contente!");
         } catch (error) {
             console.error("Erro ao atualizar atributos:", error);
@@ -141,9 +142,13 @@ const TicTacToe = ({ tamagotchiID }: TicTacToeProps) => {
                 ))}
             </View>
             {winner && (
-                <View style={styles.button}>
-                    <Button title="Novo Jogo" onPress={handleNewGame} />
-                    <Button title="Voltar" onPress={() => navigation.goBack()} style={styles.button} />
+                <View style={styles.buttonContainer}>
+                    <Button
+                        color='#cd49ec'
+                        title="Novo Jogo" onPress={handleNewGame} />
+                    <Button
+                        color='#cd49ec'
+                        title="Voltar" onPress={() => navigation.goBack()} style={styles.button} />
                 </View>
             )}
         </View>

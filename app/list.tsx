@@ -1,34 +1,51 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Image, Pressable } from 'react-native';
+import { View, Text, StyleSheet, Image, Pressable, Button, Alert } from 'react-native';
 import { useTamagotchiDatabase } from './database/tamagotchiService';
 import { FlatList } from 'react-native';
 import { Tamagotchi } from './types';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from './types';
 
-type ListScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'list'>;
+type ListScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'tamagotchi'>;
 
 export default function List() {
     const [tamagotchis, setTamagotchis] = useState<Tamagotchi[]>([]);
-    const { getTamagotchi } = useTamagotchiDatabase();
+    const { getTamagotchi, deleteTamagotchi } = useTamagotchiDatabase();
     const navigation = useNavigation<ListScreenNavigationProp>();
 
-    useEffect(() => {
-        const listTamagotchis = async () => {
-            try {
-                const data: Tamagotchi[] = await getTamagotchi();
-                setTamagotchis(data);
-            } catch (error) {
-                console.error(error);
-            }
-        };
+    const loadTamagotchis = async () => {
+        try {
+            const data: Tamagotchi[] = await getTamagotchi();
+            setTamagotchis(data);
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
-        listTamagotchis();
+    useEffect(() => {
+        loadTamagotchis();
     }, []);
 
+    useFocusEffect(
+        React.useCallback(() => {
+            loadTamagotchis();
+        }, [])
+    );
+
     const handlePress = (id: number) => {
-        navigation.navigate('tamagotchi', { id });
+        navigation.navigate('tamagotchi', { tamagotchiID: id });
+    };
+
+    const handleDelete = async (id: number) => {
+        try {
+            await deleteTamagotchi(id);
+            setTamagotchis(tamagotchis.filter(item => item.id !== id));
+            Alert.alert("Pronto!", "Você excluiu este bichinho :(");
+        } catch (error) {
+            Alert.alert("Erro", "Não foi possível deletar seu bichinho.");
+            console.error(error);
+        }
     };
 
     const renderItem = ({ item }: { item: Tamagotchi }) => (
@@ -37,6 +54,7 @@ export default function List() {
                 <Text style={styles.name}>{item.name}</Text>
             </Pressable>
             {item.image && <Image source={{ uri: item.image }} style={styles.image} />}
+            <Button title="Deletar" onPress={() => handleDelete(item.id)} color="red" />
         </View>
     );
 
@@ -60,22 +78,24 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
+        backgroundColor: '#DDBDE0',
     },
     header: {
         fontSize: 24,
+        fontWeight: 'bold',
     },
     item: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        justifyContent: 'space-between',
         padding: 16,
         marginBottom: 8,
-        borderColor: '#cc7',
-        borderRadius: 5,
         width: '100%',
         alignItems: 'center',
     },
     name: {
         fontSize: 20,
-        color: 'blue',
-        backgroudColor: 'black'
+        color: '#9d1cbb',
     },
     image: {
         width: 100,

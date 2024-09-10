@@ -6,8 +6,8 @@ export function useTamagotchiDatabase() {
 
     async function createTamagotchi({ name, image }: { name: string; image: string }) {
         const query = await database.prepareAsync(`
-            INSERT INTO Tamagotchi (name, image, hunger, sleep, happy) VALUES
-            ($name, $image, 70, 70, 70);
+            INSERT INTO Tamagotchi (name, image) VALUES
+            ($name, $image);
         `);
         try {
             await query.executeAsync({ $name: name, $image: image });
@@ -29,25 +29,21 @@ export function useTamagotchiDatabase() {
         }
     }
 
-    async function updateAttributes(
-        id: number, newAttributes: Partial<Tamagotchi>): Promise<void> {
-        const { hunger, sleep, happy } = newAttributes;
+    async function deleteTamagotchi(id: number): Promise<void> {
         const query = await database.prepareAsync(`
-            UPDATE Tamagotchi
-            SET hunger = COALESCE($hunger, hunger),
-                sleep = COALESCE($sleep, sleep),
-                happy = COALESCE($happy, happy)
-            WHERE id = $id;
+            DELETE FROM Tamagotchi WHERE id = 2;
         `);
         try {
-            await query.executeAsync({ $hunger: hunger ?? null, $sleep: sleep ?? null, $happy: happy ?? null, $id: id });
+            await query.executeAsync({ $id: id });
+            console.log(`Tamagotchi com ID ${id} excluído.`);
         } catch (error) {
-            console.log(error);
+            console.error("Erro ao excluir Tamagotchi:", error);
             throw error;
         } finally {
             await query.finalizeAsync();
         }
     }
 
-    return { createTamagotchi, getTamagotchi, updateAttributes };
+
+    return { createTamagotchi, getTamagotchi, deleteTamagotchi };
 }

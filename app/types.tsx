@@ -5,7 +5,7 @@ export type RootStackParamList = {
     '+not-found': undefined;
     register: undefined;
     list: undefined;
-    tamagotchi: { id: number };
+    tamagotchi: { tamagotchiID: number };
     TicTacToe: { tamagotchiID: number };
     stepCounter: { tamagotchiID: number };
 };

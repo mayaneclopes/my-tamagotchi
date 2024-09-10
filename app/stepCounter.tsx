@@ -34,7 +34,7 @@ const calculateDistance = (lat1: number, lon1: number,
     const param3 = (lat2 - lat1) * Math.PI / 180;
     const param4 = (lon2 - lon1) * Math.PI / 180;
 
-    //cálculos da fórmula de Habersine em si
+    //cálculos da fórmula de Haversine em si
     const a = Math.sin(param3 / 2) * Math.sin(param3 / 2) +
         Math.cos(param1) * Math.cos(param2) *
         Math.sin(param4 / 2) * Math.sin(param4 / 2);
@@ -48,7 +48,7 @@ const stepCounter = ({ tamagotchiID }: { tamagotchiID: number }) => {
     const [previousLocation, setPreviousLocation] = useState<LocationCoordinate | null>(null);
     const [totalDistance, setTotalDistance] = useState<number>(0);
     const [steps, setSteps] = useState<number>(0);
-    const { updateAttributes } = useTamagotchiDatabase();
+    const [happy, setHappy] = useState<number>(70);
     const navigation = useNavigation();
 
     const getLocation = async () => {
@@ -65,7 +65,6 @@ const stepCounter = ({ tamagotchiID }: { tamagotchiID: number }) => {
         });
     };
 
-    // Att a localização em 10 seg
     useEffect(() => {
         const interval = setInterval(() => {
             getLocation();
@@ -88,8 +87,8 @@ const stepCounter = ({ tamagotchiID }: { tamagotchiID: number }) => {
             setPreviousLocation(location);
 
             if (steps >= 5) {
-                updateAttributes(tamagotchiID, { happy: 100 });
-                Alert.alert("Parabéns!", "Você deu um passo em direção da felicidade do seu bichinho!");
+                setHappy(100);
+                Alert.alert("Parabéns!", "Você deu um passo em direção a saúde do seu bichinho!");
                 setSteps(0); // Reset do game
             }
         } else if (location) {
