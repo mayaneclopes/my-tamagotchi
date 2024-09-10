@@ -1,6 +1,4 @@
-
 import { SQLiteDatabase } from 'expo-sqlite';
-import { addImageColumn } from './addImageTable';
 
 export async function initDatabase(database: SQLiteDatabase): Promise<void> {
     await database.execAsync(`
@@ -10,5 +8,15 @@ export async function initDatabase(database: SQLiteDatabase): Promise<void> {
         );
     `);
 
-    await addImageColumn(database);
+    const result = await database.getAllAsync(`
+        PRAGMA table_info(Tamagotchi);
+    `);
+
+    const hasImageColumn = result.some((col: any) => col.name === 'image');
+
+    if (!hasImageColumn) {
+        await database.execAsync(`
+            ALTER TABLE Tamagotchi ADD COLUMN image TEXT;
+        `);
+    }
 }

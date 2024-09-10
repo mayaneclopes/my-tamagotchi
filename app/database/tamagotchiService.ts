@@ -12,31 +12,26 @@ export function useTamagotchiDatabase() {
         try {
             await query.executeAsync({ $name: name, $image: image });
         } catch (error) {
-            console.log(error);
+            console.error("Error creating Tamagotchi:", error);
             throw error;
         } finally {
             await query.finalizeAsync();
         }
     }
 
-    async function getTamagotchi():
-        Promise<Tamagotchi[]> {
+    async function getTamagotchi(): Promise<Tamagotchi[]> {
         try {
-            const response =
-                await database.getAllAsync<Tamagotchi>(
-                    `SELECT * FROM Tamagotchi;`
-                );
+            const response = await database.getAllAsync<Tamagotchi>(`SELECT * FROM Tamagotchi;`);
             return response;
         } catch (error) {
+            console.error("Error retrieving Tamagotchis:", error);
             throw error;
         }
     }
 
     async function updateAttributes(
         id: number, newAttributes: Partial<Tamagotchi>): Promise<void> {
-        const { hunger,
-            sleep,
-            happy } = newAttributes;
+        const { hunger, sleep, happy } = newAttributes;
         const query = await database.prepareAsync(`
             UPDATE Tamagotchi
             SET hunger = COALESCE($hunger, hunger),
@@ -45,8 +40,7 @@ export function useTamagotchiDatabase() {
             WHERE id = $id;
         `);
         try {
-            await query.executeAsync([hunger ?? null,
-            sleep ?? null, happy ?? null, id]);
+            await query.executeAsync({ $hunger: hunger ?? null, $sleep: sleep ?? null, $happy: happy ?? null, $id: id });
         } catch (error) {
             console.log(error);
             throw error;

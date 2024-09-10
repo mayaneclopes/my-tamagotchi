@@ -26,7 +26,6 @@ export default function Home() {
       <Text style={styles.welcomeText}>Bem-vindo ao Tamagotchi App!</Text>
       <Button title="Ver Tamagotchis" onPress={navigateToList} />
       <Button title="Cadastrar Tamagotchi" onPress={navigateToRegister} />
-      <Button title="Tamagotchi" onPress={navigateToTammagotchi} />
     </View>
   );
 }

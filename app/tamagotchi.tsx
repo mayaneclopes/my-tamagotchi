@@ -1,6 +1,11 @@
 import { useEffect, useState } from "react";
 import { StyleSheet, View, Text, Button } from "react-native";
 import Svg, { Circle, Line, Path } from 'react-native-svg';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from './types'
+
+type StatusScreenNavigationProp = StackNavigationProp<RootStackParamList, 'TicTacToe'>;
 
 const styles = StyleSheet.create({
     container: {
@@ -21,13 +26,15 @@ const styles = StyleSheet.create({
     },
 });
 
+interface StatusProps {
+    tamagotchiID: number;
+}
 
-
-export default function Status() {
+export default function Status({ tamagotchiID }: StatusProps) {
     const [hunger, setHunger] = useState(70);
     const [sleep, setSleep] = useState(70);
     const [happy, setHappy] = useState(70);
-
+    const navigation = useNavigation<StatusScreenNavigationProp>();
 
     useEffect(() => {
         const timer = setInterval(() => {
@@ -56,7 +63,7 @@ export default function Status() {
         if (statusTotal <= 100) return "Muito triste :'(";
         if (statusTotal <= 150) return "Triste :(";
         if (statusTotal <= 200) return "Ok :I";
-        if (statusTotal > 200) return "Bem! :)";
+        return "Bem! :)";
     }
 
     const renderFace = (expression: string) => {
@@ -93,7 +100,7 @@ export default function Status() {
                             strokeWidth='2.5'
                             fill='none' />
                     </>
-                )
+                );
         }
     }
 
@@ -120,20 +127,19 @@ export default function Status() {
             <Text style={styles.statusText}>Status: {calculateStatus()}</Text>
 
             <Button title="Alimentar" onPress={() =>
-                setHunger(
-                    prev => Math.max(0, Math.min(100, prev + 10)))
+                setHunger(prev => Math.max(0, Math.min(100, prev + 10)))
             } />
-            <Button title="Brincar" onPress={() =>
-                setHappy(
-                    prev => Math.max(0, Math.min(
-                        100, prev + 10)))
-            } />
+            <Button
+                title="Jogo da Velha"
+                onPress={() => navigation.navigate('TicTacToe', { tamagotchiID })}
+            />
+            <Button
+                title="Contador"
+                onPress={() => navigation.navigate('stepCounter', { tamagotchiID })}
+            />
             <Button title="Dormir" onPress={() =>
-                setSleep(
-                    prev => Math.max(0, Math.min(100, prev + 10)))
+                setSleep(prev => Math.max(0, Math.min(100, prev + 10)))
             } />
         </View>
     );
 }
-;
-

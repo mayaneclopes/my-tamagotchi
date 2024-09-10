@@ -1,10 +1,13 @@
 import { NavigatorScreenParams } from '@react-navigation/native';
+
 export type RootStackParamList = {
     index: undefined;
     '+not-found': undefined;
     register: undefined;
     list: undefined;
     tamagotchi: { id: number };
+    TicTacToe: { tamagotchiID: number };
+    stepCounter: { tamagotchiID: number };
 };
 
 export interface Tamagotchi {

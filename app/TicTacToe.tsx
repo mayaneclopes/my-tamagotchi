@@ -1,10 +1,7 @@
 import { useEffect, useState } from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Pressable, Alert, Text, Button } from "react-native";
 import { useTamagotchiDatabase } from "./database/tamagotchiService";
-import { Alert } from "react-native";
-import { Text } from "react-native";
-import { Button } from "react-native";
-
+import { useNavigation } from '@react-navigation/native';
 
 interface TicTacToeProps {
     tamagotchiID: number;
@@ -15,6 +12,7 @@ const TicTacToe = ({ tamagotchiID }: TicTacToeProps) => {
     const [isPlayerTurn, setIsPlayerTurn] = useState(true);
     const [winner, setWinner] = useState<string | null>(null);
     const { updateAttributes } = useTamagotchiDatabase();
+    const navigation = useNavigation();
 
     const styles = StyleSheet.create({
         container: {
@@ -30,6 +28,7 @@ const TicTacToe = ({ tamagotchiID }: TicTacToeProps) => {
             alignItems: 'center',
             borderWidth: 1,
             borderColor: "#000",
+            backgroundColor: 'white',
         },
         board: {
             width: 300,
@@ -46,7 +45,7 @@ const TicTacToe = ({ tamagotchiID }: TicTacToeProps) => {
             marginVertical: 20,
             fontSize: 24,
         }
-    })
+    });
 
     useEffect(() => {
         const checkWinner = (board: string[]) => {
@@ -70,7 +69,7 @@ const TicTacToe = ({ tamagotchiID }: TicTacToeProps) => {
             }
 
             if (board.every((cell) => cell !== '')) {
-                setWinner("Draw")
+                setWinner("Draw");
             }
             return null;
         }
@@ -90,14 +89,11 @@ const TicTacToe = ({ tamagotchiID }: TicTacToeProps) => {
     };
 
     const machineMove = () => {
-        const emptyCells = board.map((
-            cell, index) => (cell === '' ? index : null)
-        ).filter((index) => index !== null);
+        const emptyCells = board.map((cell, index) => (cell === '' ? index : null))
+            .filter((index): index is number => index !== null);
 
         if (emptyCells.length > 0) {
-            const randomIndex = emptyCells[Math.floor(
-                Math.random() * emptyCells.length
-            )] as number;
+            const randomIndex = emptyCells[Math.floor(Math.random() * emptyCells.length)];
             const newBoard = [...board];
             newBoard[randomIndex] = 'O';
             setBoard(newBoard);
@@ -120,7 +116,10 @@ const TicTacToe = ({ tamagotchiID }: TicTacToeProps) => {
         setIsPlayerTurn(true);
 
         try {
-            await updateAttributes(tamagotchiID, { happy: 100 });
+            console.log("Atualizando atributos do Tamagotchi:", tamagotchiID, { happy: 100 });
+            await updateAttributes(tamagotchiID, {
+                happy: 100
+            });
             Alert.alert("Parabéns!", "Você deixou seu bichinho muito contente!");
         } catch (error) {
             console.error("Erro ao atualizar atributos:", error);
@@ -136,17 +135,15 @@ const TicTacToe = ({ tamagotchiID }: TicTacToeProps) => {
             </Text>
             <View style={styles.board}>
                 {board.map((cell, index) => (
-                    <View key={index} style={styles.cell}>
-                        <Text style={styles.text}
-                            onPress={() => handleCellPress(index)}>
-                            {cell}
-                        </Text>
-                    </View>
+                    <Pressable key={index} style={styles.cell} onPress={() => handleCellPress(index)}>
+                        <Text style={styles.text}>{cell}</Text>
+                    </Pressable>
                 ))}
             </View>
             {winner && (
                 <View style={styles.button}>
                     <Button title="Novo Jogo" onPress={handleNewGame} />
+                    <Button title="Voltar" onPress={() => navigation.goBack()} style={styles.button} />
                 </View>
             )}
         </View>
