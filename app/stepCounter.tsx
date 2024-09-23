@@ -68,14 +68,14 @@ const stepCounter = ({ tamagotchiID }: { tamagotchiID: number }) => {
     useEffect(() => {
         const interval = setInterval(() => {
             getLocation();
-        }, 5000);
+        }, 1000);
 
         return () => clearInterval(interval);
     }, []);
 
     useEffect(() => {
         if (location && previousLocation) {
-            const stepDistance = 0.7; //dá o cumprimento de 0,7m p/ cada passo
+            const stepDistance = 0.7; //dá o comprimento de 0,7m p/ cada passo
             const distance = calculateDistance( //dá a distância real
                 previousLocation.latitude,
                 previousLocation.longitude,

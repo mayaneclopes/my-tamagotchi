@@ -31,7 +31,7 @@ export function useTamagotchiDatabase() {
 
     async function deleteTamagotchi(id: number): Promise<void> {
         const query = await database.prepareAsync(`
-            DELETE FROM Tamagotchi WHERE id = 2;
+            DELETE FROM Tamagotchi WHERE id = $id;
         `);
         try {
             await query.executeAsync({ $id: id });
